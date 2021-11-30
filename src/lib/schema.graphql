@@ -1,0 +1,107 @@
+directive @unique on FIELD_DEFINITION
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Post {
+  id: ID!
+  slug: String! @unique
+  author_name: String
+  user_id: ID
+  title: String
+  description: String
+  post_url: String
+  post_image: String
+  likes_count: Int
+  created_at: String
+}
+
+type PostResult {
+  success: Boolean!
+  errors: [String]
+  post: Post
+}
+type PostsResult {
+  success: Boolean!
+  errors: [String]
+  posts: [Post]
+}
+
+type User {
+  id: ID!
+  name: ID!
+  email: String!
+  password: String!
+  access: String!
+  posts: [Post]
+}
+
+type UserResult {
+  success: Boolean!
+  errors: [String]
+  user: User
+}
+
+type StatusResponse {
+  success: Boolean!
+  message: String
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  posts: [Post]
+}
+
+type TagResult {
+  success: Boolean!
+  errors: [String]
+  tag: Tag
+}
+
+type TagsResult {
+  success: Boolean!
+  errors: [String]
+  tags: [Tag]
+}
+
+type Query {
+  listPosts: PostsResult!
+  getPost(id: ID!): PostResult!
+  getUser(id: ID!): UserResult!
+  getPostBySlug(slug: String!): PostResult!
+}
+type Mutation {
+  createPost(
+    title: String!
+    post_url: String
+    description: String!
+    created_at: String
+    user_id: ID!
+  ): PostResult!
+  deletePost(id: ID!): StatusResponse!
+  updatePost(
+    id: ID!
+    user_id: ID
+    title: String
+    description: String
+    post_url: String
+    created_at: String
+  ): PostResult
+  createUser(
+    name: String!
+    email: String!
+    password: String!
+    access: String!
+  ): UserResult
+  updateUser(
+    id: ID!
+    name: String
+    email: String
+    password: String
+    access: String
+  ): UserResult
+  deleteUser(id: ID!): StatusResponse
+}
