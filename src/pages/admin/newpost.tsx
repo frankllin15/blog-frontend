@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useMutation } from "@apollo/react-hooks"
+import { useRouter } from "next/router"
 import {
   POST_MULTATION,
   SINGLE_UPLOAD_MUTAION,
@@ -30,6 +31,8 @@ const NewPost = () => {
   const [title, setTitle] = useState("")
   const [desc, setDesc] = useState("")
 
+  const router = useRouter()
+
   const handleSubmit = async () => {
     // console.log(title, desc)
 
@@ -42,14 +45,9 @@ const NewPost = () => {
       const dataImage = imageResp.singleUpload
       const dataPost = postResp.singleUpload
 
-      console.log(imageResp)
-      console.log(postResp)
-
-      // imageResp.data.success
-
       if (dataPost.success && dataImage.success) {
         const post_content = dataPost.file.file_url
-        const post_image = dataImage.file.file_name
+        const post_image = dataImage.file.file_url
         try {
           createPost({
             variables: {
@@ -74,7 +72,16 @@ const NewPost = () => {
     }
   }
 
-  console.log(data)
+  if (data) {
+    let seePost = confirm(
+      "Post cirado com sucesso! \nDeseja vizualizar o post?"
+    )
+
+    if (seePost) return router.replace("/newpost", "", { shallow: true })
+
+    router.replace("/newpost", "newpost", { shallow: true })
+    return
+  }
 
   return (
     // <ApolloProvider client={client}>
@@ -91,7 +98,9 @@ const NewPost = () => {
         {loading ? (
           "Submitting..."
         ) : error ? (
-          console.log(error)
+          <div>
+            <p>Um erro ocorreu :(</p>
+          </div>
         ) : (
           <div className="flex flex-col ">
             <label htmlFor="title">Titulo do Post</label>

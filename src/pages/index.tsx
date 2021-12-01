@@ -6,15 +6,15 @@ import { getAllPosts } from "../lib/graphql/query"
 import { gql } from "@apollo/client"
 import CardPost from "../components/CardPost"
 import { useRouter } from "next/router"
-import Header from "../components/Header"
-import Footer from "../components/Footer"
+
 import Layout from "../components/Layout"
 
 interface IPostData {
   title: string
   description: string
-  //   poster_path: string
   slug: string
+  post_content: string
+  post_image: string
 }
 
 interface IProps {
@@ -22,14 +22,13 @@ interface IProps {
 }
 
 const Home: React.FC<IProps> = ({ posts }) => {
-  // console.log(posts)
-  const router = useRouter()
+  console.log(posts)
+
   return (
     <>
       <Head>
         <title></title>
       </Head>
-      {/* <Header /> */}
 
       <Layout>
         <main className="pl-11 pr-11 w-full min-h-screen mobile:pl-2 mobile:pr-2">
@@ -44,7 +43,6 @@ const Home: React.FC<IProps> = ({ posts }) => {
           </ul>
         </main>
       </Layout>
-      {/* <Footer /> */}
     </>
   )
 }
@@ -59,6 +57,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
           description
           id
           slug
+          post_content
+          post_image
         }
       }
     }

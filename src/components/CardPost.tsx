@@ -7,7 +7,8 @@ interface IData {
   title: string
   description: string
   slug: string
-  //   poster_path: string
+  post_content: string
+  post_image: string
 }
 
 interface IProps {
@@ -20,7 +21,7 @@ const CardPost: React.FC<IProps> = ({ data }) => {
       <div className="flex flex-col w-52 max-w-sm mobile:w-full justify-start hover:cursor-pointer group">
         <Image
           onError={() => console.log("Erro na imagem")}
-          src="/images/post.jpg"
+          src={"https://" + data.post_image}
           width={200}
           height={200}
           alt="Poster"

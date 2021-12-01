@@ -1,17 +1,18 @@
-import { getApolloClient } from "../apollo"
 import {
   gql,
   ApolloQueryResult,
   ApolloError,
   DocumentNode,
 } from "@apollo/client"
+import createApolloClient from "../../services/apolloClient"
 
-const client = getApolloClient()
+const client = createApolloClient()
 
 export interface IPost {
   slug: string
   title: string
   description: string
+  post_image: string
 }
 
 export type IFullPost = IPost & {
@@ -27,7 +28,7 @@ export type IFullPost = IPost & {
 export const getAllPosts = async (
   query: DocumentNode
 ): Promise<Array<IPost>> => {
-  const { data, error } = await client.query({
+  const { data, errors } = await client.query({
     query: query,
   })
 
@@ -37,7 +38,7 @@ export const getAllPosts = async (
 export const getPostBySlug = async (
   slug: string | string[]
 ): Promise<IFullPost> => {
-  let id = slug.toString().match(/[a-z1-9]+$/)[0] || ""
+  let id = slug.toString().match(/[a-z0-9]+$/)[0] || ""
 
   console.log(id)
   try {
@@ -57,12 +58,13 @@ export const getPostBySlug = async (
           }
         }
       `,
+
       variables: {
         id,
       },
     })
 
-    console.log("data: ", await data)
+    console.log("data: ", await data.getPost.post)
     return data.getPost.post
   } catch (e) {
     console.log("Errorrrr")

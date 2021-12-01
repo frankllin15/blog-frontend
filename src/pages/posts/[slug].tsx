@@ -8,6 +8,8 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { darcula } from "react-syntax-highlighter/dist/cjs/styles/prism"
 import Layout from "../../components/Layout"
 import Date from "../../components/Date"
+import fetch from "node-fetch"
+import https from "https"
 
 interface IProps {
   post: IFullPost & {
@@ -19,12 +21,13 @@ const Post: React.FC<IProps> = ({ post }) => {
   if (post)
     return (
       <>
+        {console.log(post)}
         <Layout>
           <div className="flex flex-col lg:flex-row w-full bg-gray-100 pt-5 pb-5">
             <aside className="flex flex-1 items-center   mobile:flex-row  h-full pl-2 pt-3 pb-3 mb-3">
               <div className="w-12 h-12 rounded-full bg-gray-600 mr-4"></div>
               <div>
-                <h3>{post.author.name}</h3>
+                <h3>{post.author?.name}</h3>
 
                 <Date dateString={post.created_at} />
               </div>
@@ -94,14 +97,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const post = await getPostBySlug(slug)
 
-  const base_url = "localhost:4000"
-  const url = "storage/post/8ab1895b-8fd2-4cac-8114-aa9f3fedf76e.md"
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  })
 
-  // console.log(new URL(url, base_url))
-
-  const resp = await fetch(
-    "https://localhost:4000/storage/post/8ab1895b-8fd2-4cac-8114-aa9f3fedf76e.md"
-  )
+  const resp = await fetch("https://" + post.post_content, {
+    agent: httpsAgent,
+  })
 
   const md = await resp.text()
 

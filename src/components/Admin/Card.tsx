@@ -4,7 +4,9 @@ import { IPost } from "../../lib/graphql/query"
 import Image from "next/image"
 
 interface Props {
-  post: IPost
+  post: IPost & {
+    post_image: string
+  }
 }
 
 function Card({ post }: Props): ReactElement {
@@ -13,7 +15,7 @@ function Card({ post }: Props): ReactElement {
       <div className="w-44 h-44 relative shadow-md mr-4">
         <Image
           onError={() => console.log("Erro na imagem")}
-          src="/images/post.jpg"
+          src={"https://" + post.post_image}
           layout="fill"
           alt="Poster"
           className="transform duration-700 group-hover:scale-105 rounded-md"

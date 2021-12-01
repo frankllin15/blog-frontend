@@ -1,5 +1,4 @@
-import client from "../../services/apollo-client"
-import { gql, useMutation } from "@apollo/client"
+import { gql } from "@apollo/client"
 
 interface IPost {
   title: string

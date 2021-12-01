@@ -1,6 +1,5 @@
 import React from "react"
-import Header from "../../components/Admin/Header"
-import Aside from "../../components/Admin/Aside"
+
 import Posts from "../../components/Admin/Posts"
 import { getAllPosts } from "../../lib/graphql/query"
 import { gql } from "@apollo/client"
@@ -24,11 +23,12 @@ export default index
 export const getServerSideProps = async () => {
   const query = gql`
     query {
-      listPosts {
+      getPosts {
         posts {
           slug
           title
           description
+          post_image
         }
       }
     }
