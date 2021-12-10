@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
+import { useCookies, CookiesProvider } from "react-cookie"
+
 import { Resource, Star, File, Inbox } from "../icons"
 
 const CustomLink = ({ href, children, Icon }) => {
@@ -27,6 +29,16 @@ const CustomLink = ({ href, children, Icon }) => {
 }
 
 const Aside = () => {
+  const [cookie, setCookie, removeCookie] = useCookies(["token", "user"])
+
+  const router = useRouter()
+
+  const handleLogout = () => {
+    removeCookie("token", { path: "/admin" })
+    removeCookie("user", { path: "/admin" })
+    router.reload()
+  }
+
   return (
     <aside className="  p-3 min-w-12 border-r border-opacity-50 shadow-md">
       <h2 className="text-center">Blog</h2>
@@ -51,6 +63,9 @@ const Aside = () => {
           <CustomLink href="/" Icon={Inbox}>
             Messages
           </CustomLink>
+        </li>
+        <li>
+          <button onClick={handleLogout}>Sair</button>
         </li>
       </ul>
     </aside>

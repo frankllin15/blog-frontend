@@ -4,10 +4,14 @@ import { useRouter } from "next/router"
 import {
   POST_MULTATION,
   SINGLE_UPLOAD_MUTAION,
+  VerifySession,
 } from "../../lib/graphql/multations"
 // import { uploadFile } from "../../lib/fileServer"
 
 import { withApollo } from "../../services/apollo"
+import { NextPage, NextPageContext } from "next"
+import { ApolloClient, NormalizedCacheObject } from "@apollo/client"
+import { parseCookies } from "../../utils"
 const CustomInput = ({ name, onChange }) => {
   return (
     <input
@@ -20,7 +24,12 @@ const CustomInput = ({ name, onChange }) => {
   )
 }
 
-const NewPost = () => {
+interface IProps {
+  userId: string
+  children: React.ReactNode
+}
+
+const NewPost: NextPage = ({ userId }: IProps) => {
   const [file, setFile] = useState(null)
   const [image, setImage] = useState(null)
 
@@ -51,7 +60,7 @@ const NewPost = () => {
         try {
           createPost({
             variables: {
-              authorId: "6528c2ec-10d8-4c38-b1ed-aa56ad07172d",
+              authorId: userId,
               title: title,
               description: desc,
               post_content: post_content,
@@ -77,10 +86,9 @@ const NewPost = () => {
       "Post cirado com sucesso! \nDeseja vizualizar o post?"
     )
 
-    if (seePost) return router.replace("/newpost", "", { shallow: true })
+    if (seePost) router.replace("/admin/")
 
-    router.replace("/newpost", "newpost", { shallow: true })
-    return
+    router.reload()
   }
 
   return (
@@ -155,6 +163,45 @@ const NewPost = () => {
     </div>
     // </ApolloProvider>
   )
+}
+
+interface IInitialProps extends NextPageContext {
+  apolloClient: ApolloClient<NormalizedCacheObject>
+}
+
+NewPost.getInitialProps = async ({
+  req,
+  res,
+  apolloClient: client,
+}: IInitialProps) => {
+  const cookies = parseCookies(req)
+
+  // const client = createApolloClient()
+  const { token } = cookies
+
+  // Verifica se existe um token e se ele é válido
+  try {
+    if (!token) throw new Error("Token not provider")
+
+    const { success, userId } = await VerifySession(token, client)
+
+    if (!success) throw new Error("Invalid token provider")
+
+    // console.log(data)
+
+    // const { userId } = data.session
+
+    return {
+      userId,
+    }
+  } catch (e) {
+    res.writeHead(307, { Location: "/admin/login" })
+    res.end()
+
+    return {
+      props: {},
+    }
+  }
 }
 
 export default withApollo({ ssr: true })(NewPost)

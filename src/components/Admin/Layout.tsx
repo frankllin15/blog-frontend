@@ -17,11 +17,11 @@ function Layout({ children }: Props): ReactElement {
   }
 
   return (
-    <div className="flex flex-row h-full min-h-screen  bg-gray-50">
+    <div className="flex flex-row  min-h-screen  bg-gray-50">
       <Aside />
       <div className="flex flex-col align-top  self-start w-full  p-5">
         <Header handleSearch={handleSearch} setSearchKey={setSearchKey} />
-        <div className="w-full  flex items-center shadow-md rounded-md justify-center mt-24">
+        <div className="w-full h-full  flex items-center shadow-md rounded-md justify-center mt-14">
           {children}
         </div>
       </div>

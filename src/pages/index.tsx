@@ -33,7 +33,7 @@ const Home: React.FC<IProps> = ({ posts }) => {
       <Layout>
         <main className="pl-11 pr-11 w-full min-h-screen mobile:pl-2 mobile:pr-2">
           <h1>Posts</h1>
-          <ul className="flex flex-row mobile:flex-col mobile:items-center justify-between">
+          <ul className="flex flex-row mobile:flex-col mobile:items-center justify-evenly">
             {posts[0] &&
               posts.map((post, id) => (
                 <li key={id} className="mr-2  mb-3">

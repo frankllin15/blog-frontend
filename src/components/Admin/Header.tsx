@@ -38,7 +38,7 @@ const Header = ({ setSearchKey, handleSearch }: IProps) => {
       </div>
       <div className="flex flex-row flex-1 items-center  justify-around">
         <BellIcon />
-        <Link href="/admin/write">
+        <Link href="/admin/newpost">
           <a className="h-8 p-3 text-sm text-white bg-black shadow-md hover:bg-white hover:text-black duration-200 ease-in-out flex place-items-center rounded-lg">
             New Post
           </a>

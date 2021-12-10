@@ -14,6 +14,9 @@ export default function createApolloClient(initialState, ctx) {
       uri: "https://localhost:4000/graphql", // Server URL (must be absolute)
       credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
       fetch,
+      headers: {
+        authorization: "b2cd55d6-fc8e-4302-a741-81e34fd2ebc6",
+      },
       fetchOptions: {
         agent: new https.Agent({ rejectUnauthorized: false }),
       },

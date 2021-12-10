@@ -7,7 +7,7 @@ interface Props {
 
 const Post = ({ posts }: Props) => {
   return (
-    <div className="flex justify-around w-full flex-wrap pb-4 pt-4">
+    <div className="flex justify-around min-h-full w-full flex-wrap pb-4 pt-4">
       {posts
         ? posts.map((post, id) => <Card post={post} key={id} />)
         : "Nem um post ainda."}
